@@ -1,0 +1,11 @@
+{% include 'base.html' %}
+
+{% block content %}
+{{msg}}
+<form role="form" action="/login/" method="POST">
+    <input id="username" name="username" class="form-control" type="text" />
+    <input id="passwd" name="passwd" type="password" class="form-control" />
+
+ <button type="submit" id="reply_submit" name="reply_submit" class="btn btn-primary" value="login">login</button>
+</form>
+{% endblock %}

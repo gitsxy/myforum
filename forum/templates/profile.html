@@ -1,0 +1,87 @@
+{% include 'base.html' %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-sm-3">
+    <div class="list-group">
+    <div class="media list-group-item">
+        <div class="media-left">
+            <img class="media-object img-circle" src="{{user.avatar}}" alt="avatar" style="width:64px;height:64px">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                {{user.username}}
+                
+                </h4>
+            <small style="color:#999">
+                <span>2016-6-15 20:3</span>
+                <br/>
+                <span>4057篇主题</span> |
+                <span>13条回复</span>
+            </small>
+        </div>
+        <blockquote style="font-size:14px;">
+            <p>I like solitude, yearning for freedom</p>
+            <footer>Someone famous in <cite title="Source Title">hohai</cite></footer>
+        </blockquote>
+        <table  style="font-size:12px;width:100%" align="center">
+            <tr>
+                {% ifequal request.user user %}
+                <td align="center" style="border-right:1px solid #AACCEE;">
+                    {% ifequal msg_num 0 %}
+                    <p>0</p>消息
+                    {% else %}
+                    <p><a href="{% url 'message' %}"><span class="badge">{{msg_num}}</span></a></p>消息
+                    {% endifequal %}
+                </td>
+                {% endifequal %}
+                <td align="center" style="border-right:1px solid #AACCEE;"><p>{{post_num}}</p>帖子</td>
+
+                <td align="center" style="border-right:1px solid #AACCEE;"><p>{{followeders}}</p>粉丝</td>
+                <td align="center"><p>{{followings}}</p>关注</td>
+
+            </tr>
+        </table>
+    </div>
+        {% ifequal button_tag 'None' %}
+            {% if request.user.is_authenticated %}
+                <div class="list-group-item">
+                    <span class="text-right" style="display:block">
+                        <a href="{% url 'edit_profile' %}"><button type="submit" class="btn btn-sm btn-default userfollow" id="1">编辑资料</button></a>
+                    </span>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if button_tag == 'follow' %}
+                <div class="list-group-item">
+                    <form role="form" action="{% url 'follow' user.id %}" method="POST" >
+                    <span class="text-right" style="display:block">
+                        
+                        <button type="submit" class="btn btn-sm btn-default userfollow" id="1">关注TA</button>
+                    </span>
+                     </form>
+                </div>
+
+               
+            {% else %}
+                <div class="list-group-item">
+                    <form role="form" action="{% url 'unfollow' user.id %}" method="POST" >
+                    <span class="text-right" style="display:block">
+                        
+                        <button type="submit" class="btn btn-sm btn-default userfollow" id="1">取消关注</button>
+                    </span>
+                     </form>
+                </div>
+            {% endif %}
+        {% endifequal %}
+    </div>
+    </div>
+    <div class="col-sm-9">
+        {% include '__post.html' %}
+    </div>
+</div>
+
+{% include 'page_footer.html' %}
+{% endblock %}

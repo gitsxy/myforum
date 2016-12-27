@@ -1,0 +1,35 @@
+<div align="center" >
+<ul class="pagination" style="margin-top:-8px;margin-bottom:-12px">
+    {% if items.has_previous %}
+    <li>
+      <a href="?page={{ items.previous_page_number }}">&laquo;</a>
+    </li>
+    {% else %}
+    <li class="disabled">
+      <a href="">&laquo;</a>
+    </li>
+    {% endif %}
+
+    {% for page_number in items.paginator.page_range %}
+        {% ifequal page_number  items.number %}
+        <li class="disabled">
+          <a href="">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li>
+          <a href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endifequal %}  
+    {% endfor %}
+
+    {% if items.has_next %}
+    <li>
+      <a href="?page={{ items.next_page_number }}">&raquo;</a>
+    </li>
+    {% else %}
+    <li class="disabled">
+      <a href="">&raquo;</a>
+    </li>  
+    {% endif %}
+</ul>
+</div>

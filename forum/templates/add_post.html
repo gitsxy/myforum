@@ -1,0 +1,152 @@
+{% include 'base.html' %}
+
+
+{% block main %}
+
+
+<meta charset=UTF-8>
+<title>添加投票</title>
+
+<script type="text/javascript">
+    var op_cnt = 2;
+
+    function add(){ 
+        var TemO=document.getElementById("pic_load_form"); 
+        var newInput = document.createElement("input");  
+
+        newInput.setAttribute("type","text");
+        newInput.setAttribute("name","option"+op_cnt);
+        newInput.setAttribute("id","option"+op_cnt);
+        newInput.setAttribute("placeholder","选项"+(op_cnt+1));
+        newInput.setAttribute("class","form-control");
+        TemO.appendChild(newInput); 
+ 
+        op_cnt ++;
+        b2.disabled = false;
+        if (op_cnt >= 10){ 
+            b1.disabled = 'disabled';
+        }
+    } 
+
+    function del() { 
+        if(op_cnt==2){
+            b2.disabled = 'disabled';
+            return;
+        }      
+        op_cnt--;   
+        document.getElementById("option"+op_cnt).parentNode.removeChild(document.getElementById("option"+op_cnt));  
+        b1.disabled = false
+        if(op_cnt==2){
+            b2.disabled = 'disabled';
+        }  
+    }  
+
+    function fsubmit(obj){
+        var x=document.getElementById("pic_load_form");
+        for (var i=0;i<x.length;i++){
+            if((i!=1) && x.elements[i].value==''){
+                alert("除了正文，其他均需要填写！");
+                return;
+            }   
+        }
+        for (var i=4;i<x.length;i++){
+            for (var j=4; j<i; j++){
+                if(x.elements[j].value==x.elements[i].value){
+                    alert("选项不能相同");
+                    return;
+                }
+                    
+            }
+        }
+        obj.submit();
+    }
+
+    function add_hid(form_obj,val){
+        var TemO=document.getElementById(form_obj); 
+        var newInput = document.createElement("input");  
+
+        newInput.setAttribute("type","hidden");
+        newInput.setAttribute("name","post_topic");
+        newInput.setAttribute("id","post_topic");
+        newInput.setAttribute("value",val);
+        TemO.appendChild(newInput); 
+    }
+
+    function del_hid(obj){
+        document.getElementById(obj).parentNode.removeChild(document.getElementById(obj));  
+    }
+
+    function showhid_div(){
+        if(document.getElementById("topicchoice").value==7){
+            del_hid("post_topic");
+            add_hid("pic_load_form",document.getElementById("topicchoice").value);
+            document.getElementById("voteform").style.display="block";
+            document.getElementById("postform").style.display="none";
+        }
+        else{
+            del_hid("post_topic");
+            add_hid("norm_post",document.getElementById("topicchoice").value);
+            document.getElementById("voteform").style.display="none";
+            document.getElementById("postform").style.display="block";
+        }
+    }
+
+</script>
+
+<div  align="center">
+    <select name="topicchoice" id="topicchoice" style="height: 35px; width:80px;"  onchange="javascript:showhid_div();">  
+        <option value="1">jishu</option>   
+        <option value="2">xinwen</option>   
+        <option value="3">zhengjing</option>   
+        <option value="4">shenghuo</option>       
+        <option value="5">gongzuo</option>   
+        <option value="6">qita</option>   
+        <option value="7">toupiao</option>  
+    </select>   
+</div>
+
+<div id="voteform" name="voteform" style="display:none" align="center">
+
+    <p>  
+        <form role="form"  id="pic_load_form" name="pic_load_form"  method="POST" enctype="multipart/form-data"> 
+    <p>
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="请输入标题">
+        </p>
+            <textarea class="form-control" id="introduction" name="introduction" rows="4" placeholder="请输入正文"></textarea>
+            <input type="radio" class="form-control" name="optionsRadios" id="optionRaido2" checked="checked" required="required" value="single"/>单选<br/>
+            <input type="radio" class="form-control" name="optionsRadios" id="optionRaido1" required="required" value="multi"/>多选
+            <input type="text" class="form-control" id="option0" name="option0"  required="required" requiredErrorText="please input description！" placeholder="选项1">
+            <input type="text" class="form-control" id="option1" name="option1"  required="required" requiredErrorText="please input description！" placeholder="选项2">
+
+        </form>
+    </p>
+    <p>
+        <button type="button" class="btn btn-default" id="b1" name="b1" onclick="javascript:add();">增加选项</button>
+        <button type="button" class="btn btn-default" id="b2" name="b2" disabled="true"  onclick="javascript:del();">减少选项</button><br/>
+    </p>
+    <p>
+    <button type="button" class="btn btn-primary" value="submit"  onClick="javascript:fsubmit(document.pic_load_form);">提交</button></p>
+</div>
+
+
+
+<div  id="postform" name="postform" >
+    <p>
+    <form id="norm_post" id="norm_post" role="form" method="POST">
+        <input type="hidden" id="post_topic" name="post_topic" value="1">
+        <p>
+        <input type="text" class="form-control" id="title" name="title"  required="required" requiredErrorText="please input description！" placeholder="title">
+        </p>
+        {% for field in form %}
+        <div style="width:102%">
+            {{field}}
+        </div> 
+        {% endfor %}
+<div  align="center">
+    <input type="submit" class="btn btn-primary" value="提交">
+</div>
+    </form>
+    </p>
+</div> 
+{% include 'page_footer.html' %}
+{% endblock %}

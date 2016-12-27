@@ -1,0 +1,43 @@
+
+<div class="col-sm-3">
+    <div class="panel panel-default"> 
+        <div class="panel-heading"> 
+            我的信息
+        </div>
+        <div class="panel-body"> 
+            {% if request.user.is_authenticated %}
+            <div align="center"> 
+            <a href="{% url 'user' request.user.id %}"><img class="img-circle" style="width:60px;height:60px" src="{{request.user.avatar}}"></img></a>
+            <p>{{request.user.username}}</p>
+            <p>消息<a href="{% url 'message' %}"><small><span class="badge">{{request.user.mesg_num}}</span></small></a></p>
+
+            <a href="/add_post"><button type="submit" id="goto_addpost" name="goto_addpost" class="btn btn-primary" value="goto_addpost" style="width:80%">去发贴</button></a>
+            </div>
+            {% else %}
+            <div align="center"> 
+            <button type="submit" id="goto_login" name="goto_login" class="btn btn-primary" value="goto_login" style="width:80%"  data-toggle="modal" data-target="#myModal">login</button>
+            <p></p>还没有账号？<a href="/register">去注册</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="panel panel-default"> 
+        <div class="panel-heading"> 
+            全站公告
+        </div>
+        <div class="panel-body"> 
+            <p>暂无公告</p>
+        </div>
+    </div>
+    <div class="panel panel-default"> 
+        <div class="panel-heading"> 
+            全站统计
+        </div>
+        <div class="panel-body"> 
+            <p>用户数：</p>
+            <p>帖子数：</p>
+            <p>精品帖子数：</p>
+        </div>
+    </div>
+</div>

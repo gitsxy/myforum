@@ -1,0 +1,209 @@
+{% include 'base.html' %}
+{% block content %}
+
+<script type="text/javascript">
+function checkRadio(theRadio) {
+    //for(var i = 1; i <= theRadio.length; i++) {
+    //    if(theRadio[i].checked) {
+    //        return true;
+    //    }
+    //}
+    for(var i = 1; i <= 10; i++){
+      if(document.getElementById('optionRadios'+i).checked==true){
+        alert("ok"+i);
+        return true;
+      }
+    }
+    alert("请选择一个选项！");
+    return false;
+}
+
+function doit(){
+  if($("input[name='optionsRadios']:checked").val()==null){
+      alert("请选择一个选项！");
+      return false;
+  }
+
+}
+
+function checkCheckBox() {
+    var ids;
+    for(var i=1;i<=10;i++){
+        ids = document.getElementById("option"+i); 
+        if(ids == undefined){
+            break;
+        }
+        if(ids.checked){   
+            return true;  
+        }
+    }  
+    alert("请至少选择一项！");  
+    return false;  
+}
+</script>
+
+
+<div class="row">
+<div class="col-sm-9">
+
+<div class="panel panel-default"> 
+    <div class="panel-heading"> 
+      <div class="row">
+
+         <div  style="padding-left:12px;padding-right:10px;float:left;" >
+          <a href="{% url 'user' post.author.id %}"><img class="img-circle" height="65" width="65" src="{{post.author.avatar}}"></a>
+        </div>
+        <h4>
+          {% if request.user.is_authenticated %}
+          <form id="praise_form" action="/praise/{{post.id}}/" method="POST">
+          <a href="#" onclick="document.getElementById('praise_form').submit();" >
+            <span type="submit" class="glyphicon glyphicon-heart-empty " style="color:#8e8e8e;float:right;margin-right:10px;font-size:18px"></span>
+          </a>
+          </form>
+          {% endif %}
+          {{post.title}}
+        </h4>
+        <div style="color:#8e8e8e;font-size:small">
+          <a href="/topic/{{post.topic.id}}" ><span class="label label-info">{{post.topic.topic}}</span></a>
+          <a href="/user/{{post.author.id}}"><span class="label label-info">{{ post.author.username }}</span></a>
+          {{post.praises}}个赞
+        发表时间:{{post.create_time|date:"Y-m-d" }} 
+        </div> 
+      </div>
+    </div>
+<div class="panel-body" style="margin-left:15px;margin-right:15px"> 
+  <div class="row">
+    {% ifequal post.topic.id 7 %}
+    <div align="center">
+      <p>{{vote.description}}</p>
+      {% if vote.closed %}
+      tou piao yi guan bi,gong you {{vote.voter_num}} ren tou piao
+        {% for opt in vote_options %}
+          <div class="form-group"> 
+              {{opt.opt_description}}:{{opt.opt_num}}
+          </div> 
+        {% endfor %}
+      {% else %}
+        {% if request.user.is_authenticated %}
+           
+            {% if i_have_voted %}
+            
+                <div class="form-group"> 
+                    nin yi tou guo piao,yi you {{vote.voter_num}} ren tou guo
+                </div>
+                {% for opt in vote_options %}
+                <div class="form-group"> 
+                    {{opt.opt_description}}
+                </div> 
+                {% endfor %}
+
+            {% else %}
+                {% if vote.multi_vote %}
+                <form role="form" action="{% url 'vote_post' post.id %}" method="POST"  onsubmit="return checkCheckBox();" enctype="multipart/form-data"> 
+                    {% for opt in vote_options %}
+                    <div class="form-group"> 
+                        <input type="checkbox" name="option{{ forloop.counter }}" id="option{{ forloop.counter }}"> {{opt.opt_description}}
+                    </div> 
+                    {% endfor %}
+                    <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit_multi">提交</button> 
+                </form>
+                {% else %}
+
+                <form role="form" action="{% url 'vote_post' post.id %}" method="POST" onsubmit="return doit();" enctype="multipart/form-data"> 
+                    {% for opt in vote_options %}
+                     <div class="form-group">
+                         <input type="radio" name="optionsRadios" id="optionRaidos{{ forloop.counter }}" value="option{{ forloop.counter }}"/> {{opt.opt_description}}
+                     </div> 
+                    {% endfor %}
+                    <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit">提交</button> 
+                </form>
+
+                {% endif %}
+            {% endif %}
+            {% ifequal request.user  post.author %}
+          </br>
+              <form role="form" action="{% url 'close_vote' post.id %}" method="POST" enctype="multipart/form-data"> 
+                <button type="submit" id="close_vote" name="close_vote" class="btn btn-primary" value="vote_submit">close_vote</button> 
+              </form>
+            {% endifequal %}
+        {% else %}
+        denglukejian
+        {% endif %}
+      {% endif %}
+    </div>
+    {% else %}
+      {{post.context|safe}}
+    {% endifequal %}
+    </div>
+</div>
+</div>
+
+
+<div class="panel panel-default">
+<div class="panel-body" style="margin-top:-15px;margin-bottom:-15px;"> 
+  {% if not replies %}
+  <div align="center">
+    <p></p>
+    <p><small>暂无回复</small></p>
+  </div>
+  {% else %}
+  {% for reply in replies.object_list %}
+      
+      <div class="row" id="{{reply.id_in_post}}" style="padding-top:12px;padding-bottom:2px;border-bottom: 1px  solid #eee;border-left: 1px solid #eee;border-right: 1px solid #eee;background:#fff;">
+          <div  style="padding-left:10px;padding-right:8px;float:left;position: absolute;" >
+            <a href="{% url 'user' reply.author.id %}"><img class="img-circle" height="50" width="50" src="{{reply.author.avatar}}"></a>
+          </div>
+        <div style="margin-left:70px;margin-right:10px;">
+          <div>
+            <p> <a href="/user/{{post.author.id}}">{{reply.author.username}}</a> {{reply.create_time|date:"Y-m-d" }} {{reply.id_in_post}}#</p>
+          </div> 
+
+          <div>
+            {{reply.context|safe}}  
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+{% endif %}
+</div>
+<div class="panel-footer" >
+{% with items=replies %} 
+{% include 'pagination.html' %}
+{% endwith %}
+ </div>
+</div>
+
+    {% if request.user.is_authenticated %}
+      <form role="form" action="{% url 'reply_post' post.id %}" method="POST">
+     
+      {% for field in form %}
+           <div style="width:102%" >
+          {{field}}
+          </div>
+      {% endfor %}
+      <div align="center">
+      <button type="submit" id="reply_submit" name="reply_submit" class="btn btn-primary" value="reply_submit" style="width:80px">回复</button>
+
+    </div>
+    <br/>
+
+      </form>
+    {% else %}
+    <div class="panel panel-default">
+    
+      <div class="panel-body" style="border:1px dashed #337ab7;margin:5px;">
+        <span class="text-center" style="display:block;width:100%;color:#999">
+            <span class="glyphicon glyphicon-lock" aria-hidden="true" style="font-size:16px;"></span>
+            You need <a href="" data-toggle="modal" data-target="#myModal">Login</a> before you can reply.
+        </span>
+      </div>
+    
+    </div>
+    {% endif %}
+
+</div>
+{% include 'side_panel.html' %}
+</div>
+{% include 'page_footer.html' %}
+
+{% endblock %}

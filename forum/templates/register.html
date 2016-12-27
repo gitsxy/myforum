@@ -1,0 +1,20 @@
+{% include 'base.html' %}
+
+{% block content %}
+{{msg}}
+ <div  class="container" style="width:30%" align="center">
+    <div class="page-header">
+    <h1>用户注册</h1>
+</div>
+<form role="form" action="{% url 'register' %}" method="POST">
+
+<input type="text" class="form-control" id="username" name="username"  required="required" requiredErrorText="please input description！" placeholder="yonghuming"><br/>
+<input type="text" class="form-control" id="mailbox" name="mailbox"  required="required" requiredErrorText="please input description！" placeholder="youxiang"><br/>
+<input type="password" class="form-control" id="passwd" name="passwd"  required="required" requiredErrorText="please input description！" placeholder="password"><br/>
+<input type="password" class="form-control" id="passwd_again" name="passwd_again"  required="required" requiredErrorText="please input description！" placeholder="password"><br/>
+<button type="submit" id="reg_btn" name="reg_btn" class="btn btn-primary" value="reply_submit" style="width:80px">回复</button>
+</form>
+</div>
+<br/>
+{% include 'page_footer.html' %}
+{% endblock %}
