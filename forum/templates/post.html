@@ -42,102 +42,103 @@ function checkCheckBox() {
 }
 </script>
 
-
 <div class="row">
 <div class="col-sm-9">
 
 <div class="panel panel-default"> 
-    <div class="panel-heading"> 
-      <div class="row">
-
-         <div  style="padding-left:12px;padding-right:10px;float:left;" >
-          <a href="{% url 'user' post.author.id %}"><img class="img-circle" height="65" width="65" src="{{post.author.avatar}}"></a>
-        </div>
-        <h4>
-          {% if request.user.is_authenticated %}
-          <form id="praise_form" action="/praise/{{post.id}}/" method="POST">
+  <div class="panel-heading"> 
+    <div class="row">
+      <div  style="padding-left:12px;padding-right:10px;float:left;" >
+        <a href="{% url 'user' post.author.id %}"><img class="img-circle" height="65" width="65" src="{{post.author.avatar}}"></a>
+      </div>
+      <h4>
+        {% if request.user.is_authenticated %}
+        <form id="praise_form" action="/praise/{{post.id}}/" method="POST">
           <a href="#" onclick="document.getElementById('praise_form').submit();" >
             <span type="submit" class="glyphicon glyphicon-heart-empty " style="color:#8e8e8e;float:right;margin-right:10px;font-size:18px"></span>
           </a>
-          </form>
-          {% endif %}
-          {{post.title}}
-        </h4>
-        <div style="color:#8e8e8e;font-size:small">
-          <a href="/topic/{{post.topic.id}}" ><span class="label label-info">{{post.topic.topic}}</span></a>
-          <a href="/user/{{post.author.id}}"><span class="label label-info">{{ post.author.username }}</span></a>
-          {{post.praises}}个赞
+        </form>
+        {% endif %}
+        {{post.title}}
+      </h4>
+      <div style="color:#8e8e8e;font-size:small">
+        <a href="/topic/{{post.topic.id}}" ><span class="label label-info">{{post.topic.topic}}</span></a>
+        <a href="/user/{{post.author.id}}"><span class="label label-info">{{ post.author.username }}</span></a>
+        {{post.praises}}个赞
         发表时间:{{post.create_time|date:"Y-m-d" }} 
-        </div> 
-      </div>
+      </div> 
     </div>
-<div class="panel-body" style="margin-left:15px;margin-right:15px"> 
-  <div class="row">
-    {% ifequal post.topic.id 7 %}
-    <div align="center">
-      <p>{{vote.description}}</p>
-      {% if vote.closed %}
-      tou piao yi guan bi,gong you {{vote.voter_num}} ren tou piao
-        {% for opt in vote_options %}
-          <div class="form-group"> 
-              {{opt.opt_description}}:{{opt.opt_num}}
-          </div> 
-        {% endfor %}
-      {% else %}
-        {% if request.user.is_authenticated %}
-           
+  </div>
+
+  <div class="panel-body" style="margin-left:15px;margin-right:15px"> 
+    <div class="row">
+      {% ifequal post.topic.id 7 %}
+
+      <div align="center">
+        <p>{{vote.description}}</p>
+        {% if vote.closed %}
+        tou piao yi guan bi,gong you {{vote.voter_num}} ren tou piao
+          {% for opt in vote_options %}
+            <div class="form-group"> 
+                {{opt.opt_description}}:{{opt.opt_num}}
+            </div> 
+          {% endfor %}
+        {% else %}
+          {% if request.user.is_authenticated %}
+             
             {% if i_have_voted %}
             
-                <div class="form-group"> 
-                    nin yi tou guo piao,yi you {{vote.voter_num}} ren tou guo
-                </div>
-                {% for opt in vote_options %}
-                <div class="form-group"> 
-                    {{opt.opt_description}}
-                </div> 
-                {% endfor %}
+              <div class="form-group"> 
+                  nin yi tou guo piao,yi you {{vote.voter_num}} ren tou guo
+              </div>
+              {% for opt in vote_options %}
+              <div class="form-group"> 
+                  {{opt.opt_description}}
+              </div> 
+              {% endfor %}
 
             {% else %}
-                {% if vote.multi_vote %}
-                <form role="form" action="{% url 'vote_post' post.id %}" method="POST"  onsubmit="return checkCheckBox();" enctype="multipart/form-data"> 
-                    {% for opt in vote_options %}
-                    <div class="form-group"> 
-                        <input type="checkbox" name="option{{ forloop.counter }}" id="option{{ forloop.counter }}"> {{opt.opt_description}}
-                    </div> 
-                    {% endfor %}
-                    <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit_multi">提交</button> 
-                </form>
-                {% else %}
 
-                <form role="form" action="{% url 'vote_post' post.id %}" method="POST" onsubmit="return doit();" enctype="multipart/form-data"> 
-                    {% for opt in vote_options %}
-                     <div class="form-group">
-                         <input type="radio" name="optionsRadios" id="optionRaidos{{ forloop.counter }}" value="option{{ forloop.counter }}"/> {{opt.opt_description}}
-                     </div> 
-                    {% endfor %}
-                    <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit">提交</button> 
-                </form>
+              {% if vote.multi_vote %}
+              <form role="form" action="{% url 'vote_post' post.id %}" method="POST"  onsubmit="return checkCheckBox();" enctype="multipart/form-data"> 
+                {% for opt in vote_options %}
+                <div class="form-group"> 
+                  <input type="checkbox" name="option{{ forloop.counter }}" id="option{{ forloop.counter }}"> {{opt.opt_description}}
+                </div> 
+                {% endfor %}
+                <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit_multi">提交</button> 
+              </form>
+              {% else %}
+              <form role="form" action="{% url 'vote_post' post.id %}" method="POST" onsubmit="return doit();" enctype="multipart/form-data"> 
+                {% for opt in vote_options %}
+                <div class="form-group">
+                  <input type="radio" name="optionsRadios" id="optionRaidos{{ forloop.counter }}" value="option{{ forloop.counter }}"/> {{opt.opt_description}}
+                </div> 
+                {% endfor %}
+                <button type="submit" id="vote_submit" name="vote_submit" class="btn btn-primary" value="vote_submit">提交</button> 
+              </form>
+              {% endif %}
 
-                {% endif %}
             {% endif %}
+
             {% ifequal request.user  post.author %}
-          </br>
+              </br>
               <form role="form" action="{% url 'close_vote' post.id %}" method="POST" enctype="multipart/form-data"> 
                 <button type="submit" id="close_vote" name="close_vote" class="btn btn-primary" value="vote_submit">close_vote</button> 
               </form>
             {% endifequal %}
-        {% else %}
-        denglukejian
+          {% else %}
+          denglukejian
+          {% endif %}
         {% endif %}
-      {% endif %}
+      </div>
+      {% else %}
+        {{post.context|safe}}
+        
+      {% endifequal %}
     </div>
-    {% else %}
-      {{post.context|safe}}
-    {% endifequal %}
-    </div>
+  </div>
 </div>
-</div>
-
 
 <div class="panel panel-default">
 <div class="panel-body" style="margin-top:-15px;margin-bottom:-15px;"> 

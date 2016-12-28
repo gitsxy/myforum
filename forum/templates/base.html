@@ -1,18 +1,12 @@
 <!DOCTYPE HTML>
 
 <head>
-    <!--link rel="stylesheet" href="/static/css/styles.css" />
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-
-    <script type="text/javascript" src="/static/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/bootstrap.min.js"></script-->
     <link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
  <!--style> body{background-color:#F5F5F5} </style-->
 </head>
-
 
 {% include 'login_diag.html' %}
 <nav class="navbar navbar-default navbar-fixed-top" style="height:55px;margin-bottom:-15px;background:#fff;border-bottom:2px solid #eee;">
@@ -23,12 +17,12 @@
                 <img class="img-circle" alt="Honmaple" src="/static/1234.jpeg" style="width:42px;">
             </a>
             <a href="/">
-            <div class="navbar-brand" style="padding-top:2;padding-left:16px;margin-top:-12px;">
-                <span style="font-size:20px;color:#EB5424"><b class="text-capitalize">TCS专用</b></span>
-                <br/>
-                <small style="font-size:10px">淫荡的一天又开始了</small>
-            </div>
-        </a>
+                <div class="navbar-brand" style="padding-top:2;padding-left:16px;margin-top:-12px;">
+                    <span style="font-size:20px;color:#EB5424"><b class="text-capitalize">TCS专用</b></span>
+                    <br/>
+                    <small style="font-size:10px">淫荡的一天又开始了</small>
+                </div>
+            </a>
         </div>
         <div class="row">
             <ul class="nav navbar-nav">
@@ -48,42 +42,45 @@
                     </ul>
                 </li>
                 {% if request.user.is_authenticated %}
-                <li><a href="{% url 'add_post' %}">发帖</a></li>
+                    <li><a href="{% url 'add_post' %}">发帖</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
-                    <div class="form-group has-feedback" style="float:right">
-                        <input class="form-control input-sm" id="search" name="search" placeholder="search" type="text" value="" style="height:30px;width:150px">
-                        <i class="icon-search form-control-feedback"><span class="glyphicon glyphicon-search"></span></i>
+                    <form onsubmit="return dispatch()" class="navbar-form navbar-right" style="margin-top:10px;" >
+                        <div class="form-group has-feedback" style="float:right">
+                            <input class="form-control input-sm" id="search" name="search" placeholder="search" type="text" value="" style="height:30px;width:150px">
+                            <i class="icon-search form-control-feedback"><span class="glyphicon glyphicon-search"></span></i>
 
-                    </div>
-                </form>
+                        </div>
+                    </form>
                 </li>
 
                 {% if request.user.is_authenticated %}
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <img class="img-circle" style="width:24px;height:24px" src="{{request.user.avatar}}"></img>   
-                    <b class="caret"></b>
-                </a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img class="img-circle" style="width:24px;height:24px" src="{{request.user.avatar}}"></img>
+                        <b class="caret"></b>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/{{request.user.id}}">个人资料</a></li>
-                        <li><a href="{% url 'message' %}">消息<small><span class="badge">{{request.user.mesg_num}}</span></small></a></li>
+                        <li>
+                            <a href="{% url 'message' %}">消息<small><span class="badge">{{request.user.mesg_num}}</span></small></a>
+                        </li>
                         
                         <li><a href="/logout">注销</a></li>
                     </ul>
                 </li>
                 {% else %}
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
-                <li><a href="" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                <li>
+                    <a href="" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-log-in"></span> 登录</a>
+                </li>
                 {% endif %}
             <ul>
         </div>
-  
     </div>
 </nav>
 
-<div class="col-md-offset-1 col-md-10" style="padding:0;margin-top:70px">
+<div class="col-md-offset-1 col-md-10" style="padding:0;margin-top:75px">
 

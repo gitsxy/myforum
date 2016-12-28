@@ -1,12 +1,11 @@
-
 <div class="panel panel-default"> 
     <div class="panel-heading"> 
         
         <div class="row">
             <div class="col-sm-6">
-            <div style="margin-left:60px;">
-                {{ _('主题帖子')}}
-            </div>
+                <div style="margin-left:60px;">
+                    {{ _('主题帖子')}}
+                </div>
             </div>
             <div class="col-sm-2 hidden-xs">
                 {{ _('作者/时间') }}
@@ -27,13 +26,13 @@
     
         <div class="row" style="padding-top:8px;border-bottom:1px solid #eee;background:#fff">
             <div class="col-sm-6">
-            <div  style="padding-right:8px;float:left;position: absolute;" >
-                <a href="{% url 'user' post.author.id %}"><img class="img-circle" height="50" width="50" src="{{post.author.avatar}}"></a>
-            </div>
-            <div style="margin-left:60px;margin-right:10px;">
-                <p><a href="/post/{{post.id}}" >{{ post.title }}</a></p>
-                <p> <a href="/topic/{{post.topic.id}}" ><span class="label label-info" style="color:#e5e5e5">{{post.topic.topic}}</span></a></p>
-            </div>
+                <div  style="padding-right:8px;float:left;position: absolute;" >
+                    <a href="{% url 'user' post.author.id %}"><img class="img-circle" height="50" width="50" src="{{post.author.avatar}}"></a>
+                </div>
+                <div style="margin-left:60px;margin-right:10px;">
+                    <p><a href="/post/{{post.id}}" >{{ post.title }}</a></p>
+                    <p> <a href="/topic/{{post.topic.id}}" ><span class="label label-info" style="color:#e5e5e5">{{post.topic.topic}}</span></a></p>
+                </div>
             </div>
             <div class="col-sm-2 hidden-xs">
                 <p><a href="/user/{{post.author.id}}">{{ post.author.username }}</a></p>
@@ -53,9 +52,9 @@
     </div>
 
     <div class="panel-footer" >
-{% with items=posts %} 
-{% include 'pagination.html' %}
-{% endwith %}
- </div>
+        {% with items=posts %} 
+        {% include 'pagination.html' %}
+        {% endwith %}
+     </div>
  </div> 
 

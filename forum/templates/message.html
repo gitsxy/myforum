@@ -4,5 +4,5 @@
     {% for mesg in mesgs %}
         <a href="/message/{{mesg.id}}">{{mesg.mesg}} {{mesg.reply.id_in_post}}</a></br>
     {% endfor %}
-{% include 'page_footer.html' %}
+    {% include 'page_footer.html' %}
 {% endblock %}

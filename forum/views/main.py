@@ -11,17 +11,10 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from myforum import settings
-try:
-    from PIL import Image
-    from PIL import ImageDraw
-except ImportError:
-    import Image
-    import ImageDraw
 
 def get_global_res():
     pass
 
-# Create your views here.
 def index(request):
     limit = 15
     posts = Post.objects.all().order_by('-id')
@@ -256,12 +249,12 @@ def edit_user(request):
         imgfile = request.FILES.get('inputfile')
         if imgfile is None:
             return HttpResponseRedirect('/')
-        img= imgfile.read()
+        img = imgfile.read()
         dest_path = settings.FORUM_STATIC_ROOT+'/avatars/'
-        dest =  open(dest_path+str(request.user.id),'w')
-        if img is None or img == '':
-            return HttpResponseRedirect('/')
-        dest.write(img)
+        with  open(dest_path+str(request.user.id),'w') as dest:
+            if img is None:
+                return HttpResponseRedirect('/')
+            dest.write(img)
         request.user.avatar = '/static/avatars/'+str(request.user.id)
         request.user.has_avatar = True
         request.user.save()
