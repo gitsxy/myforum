@@ -1,0 +1,9 @@
+Django==1.10.2
+django-appconf==1.0.2
+django-bootstrap==0.2.4
+django-ckeditor==5.1.1
+django-model-utils==2.6
+django-pagination==1.0.7
+django-summernote==0.8.6
+MySQL-python==1.2.5
+Pillow==3.4.2
